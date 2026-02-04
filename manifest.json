@@ -1,8 +1,8 @@
 {
-  "name": "Dragon Green Live Chat",
+  "name": "Dragon Chat",
   "short_name": "DragonChat",
   "description": "Neural Link Voice Communication System",
-  "start_url": "/",
+  "start_url": "https://full-sibmit.github.io/index.html",
   "display": "fullscreen",
   "background_color": "#0a0a0a",
   "theme_color": "#2ecc71",
