@@ -2,7 +2,7 @@
   "name": "Dragon Green Live Chat",
   "short_name": "DragonChat",
   "description": "Neural Link Voice Communication System",
-  "start_url": "full-submit.github.io/index.html",
+  "start_url": "https://full-submit.github.io/index.html",
   "display": "standalone",
   "background_color": "#0a0a0a",
   "theme_color": "#2ecc71",
