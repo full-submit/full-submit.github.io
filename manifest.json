@@ -2,7 +2,7 @@
   "name": "Dragon Terminal Pro",
   "short_name": "DragonTerminal",
   "description": "Neural Link Voice Communication System",
-  "start_url": "https://full-sibmit.github.io/index.html",
+  "start_url": "/",
   "display": "fullscreen",
   "background_color": "#0a0a0a",
   "theme_color": "#2ecc71",
