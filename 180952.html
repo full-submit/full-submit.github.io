@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OG Dude - The Magic Herb Podcast</title>
+    <style>
+        :root {
+            --red: #d62828;
+            --gold: #fcbf49;
+            --green: #00703c;
+            --dark: #121212;
+            --card-bg: #1e1e1e;
+            --text: #f1f1f1;
+            --radius: 35px;
+        }
+
+
+        /* Reset and Base Styles */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            background-color: var(--dark); 
+            color: var(--text); 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            line-height: 1.6;
+            text-align: center; /* Helper for centering inline-block elements */
+        }
+
+
+        /* The "Margin Centering" Utility */
+        .center-box {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+
+        header {
+            background: linear-gradient(135deg, var(--red), var(--green));
+            padding: 60px 20px;
+            border-bottom: 6px solid var(--gold);
+        }
+
+
+        .profile-container {
+            width: 90%;
+            max-width: 600px;
+        }
+
+
+        /* Profile Picture with Dragon Icon */
+        .profile-pic {
+            width: 180px; 
+            height: 180px;
+            background-color: #111;
+            border: 5px solid var(--gold);
+            border-radius: var(--radius);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        /* Pure CSS Dragon Placeholder */
+        .dragon-icon {
+            font-size: 5rem;
+            filter: drop-shadow(0 0 10px var(--gold));
+        }
+
+
+        h1 { 
+            font-size: 3rem; 
+            color: white; 
+            text-transform: uppercase; 
+            margin-bottom: 15px; 
+            text-shadow: 3px 3px 0px var(--green); 
+            letter-spacing: 2px;
+        }
+        
+        .bio-box {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 25px; 
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #ddd;
+            font-style: italic;
+        }
+
+
+        /* Content Sections */
+        .content-wrapper {
+            width: 95%;
+            max-width: 1100px;
+            padding: 40px 0;
+        }
+
+
+        section {
+            display: inline-block; /* Allows side-by-side but responds to text-align: center */
+            vertical-align: top;
+            width: 320px; 
+            margin: 15px; 
+            background: var(--card-bg);
+            border-radius: 20px; 
+            padding: 20px;
+            min-height: 450px;
+            text-align: left; /* Content inside stays left-aligned */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+
+        section.audio { border-top: 6px solid var(--red); }
+        section.video { border-top: 6px solid var(--gold); }
+        section.archive { border-top: 6px solid var(--green); }
+
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+
+        .media-item {
+            background: rgba(0,0,0,0.3);
+            margin-bottom: 15px; 
+            padding: 15px; 
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+
+        .media-item h3 { font-size: 0.9rem; margin-bottom: 10px; color: var(--gold); }
+        audio, video { width: 100%; }
+
+
+        @media (max-width: 768px) {
+            section { width: 90%; margin: 10px auto; display: block; }
+        }
+    </style>
+</head>
+<body>
+
+
+    <header>
+        <div class="profile-container center-box">
+            <div class="profile-pic center-box">
+                <!-- Dragon Icon -->
+                <span class="dragon-icon">🐲</span>
+            </div>
+            <h1>OG Dude</h1>
+            <div class="bio-box center-box">
+                <p>"Magic herb makes me talk as leader on this show you can talk like me that's if you know what the herb does the rest you will know."</p>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="content-wrapper center-box">
+        <!-- Audio Column -->
+        <section class="audio">
+            <h2 style="color: var(--red);">🎙️ Audio Feed</h2>
+            <div id="audio-list"></div>
+        </section>
+
+
+        <!-- Video Column -->
+        <section class="video">
+            <h2 style="color: var(--gold);">📺 Video Room</h2>
+            <div id="video-list"></div>
+        </section>
+
+
+        <!-- Archive Column -->
+        <section class="archive">
+            <h2 style="color: var(--green);">📁 The Vault</h2>
+            <div id="archive-list"></div>
+        </section>
+    </div>
+
+
+    <script>
+        /**
+         * GITHUB AUTOMATION CONFIG
+         * Update these two variables to link your files!
+         */
+        const GITHUB_USER = "YOUR_USERNAME"; 
+        const GITHUB_REPO = "YOUR_REPO_NAME";
+        const FOLDER_NAME = "media";
+
+
+        async function fetchMedia() {
+            const audioDiv = document.getElementById('audio-list');
+            const videoDiv = document.getElementById('video-list');
+            const archiveDiv = document.getElementById('archive-list');
+            
+            const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FOLDER_NAME}`;
+
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error();
+                const files = await response.json();
+
+
+                files.forEach(file => {
+                    const ext = file.name.split('.').pop().toLowerCase();
+                    const cleanTitle = file.name.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ");
+                    
+                    const card = document.createElement('div');
+                    card.className = 'media-item';
+                    
+                    let content = '';
+                    let target = archiveDiv;
+
+
+                    if (['mp3', 'wav', 'm4a'].includes(ext)) {
+                        content = `<audio controls src="${file.download_url}"></audio>`;
+                        target = audioDiv;
+                    } else if (['mp4', 'mov', 'webm'].includes(ext)) {
+                        content = `<video controls src="${file.download_url}"></video>`;
+                        target = videoDiv;
+                    } else {
+                        content = `<a href="${file.download_url}" target="_blank" style="color:var(--green); font-weight:bold; text-decoration:none;">Download ${ext.toUpperCase()}</a>`;
+                    }
+
+
+                    card.innerHTML = `<h3>${cleanTitle}</h3>${content}`;
+                    target.appendChild(card);
+                });
+            } catch (err) {
+                const emptyMsg = "<p style='opacity:0.5; font-size:0.8rem;'>No files found in /media yet.</p>";
+                audioDiv.innerHTML = emptyMsg;
+                videoDiv.innerHTML = emptyMsg;
+                archiveDiv.innerHTML = emptyMsg;
+            }
+        }
+
+
+        window.onload = fetchMedia;
+    </script>
+</body>
+</html>
