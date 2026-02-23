@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Topman | Feed</title>
+    <title>OG Topman | Feed</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
@@ -104,10 +104,10 @@
 
         /* --- Header & Layout --- */
         .profile-header { background: #ffffff; border-bottom: 1px solid #ddd; }
-        .cover-photo { height: 160px; width:100%; background: linear-gradient(135deg, #d1d1d1 0%, #e8e8e8 100%); }
+        .cover-photo { height: 120px; background: linear-gradient(135deg, #d1d1d1 0%, #e8e8e8 100%); }
         
         .profile-container {
-            max-width: 38rem;
+            max-width: 42rem;
             margin: 0 auto;
             padding: 0 1.5rem;
             display: flex;
@@ -118,7 +118,7 @@
 
         .profile-avatar-wrapper { margin-top: -45px; z-index: 10; }
         .profile-avatar {
-            width: 70px; height: 90px; border-radius: 20%;
+            width: 90px; height: 90px; border-radius: 20%;
             border: 4px solid white; background: #ccc;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
@@ -221,10 +221,10 @@
 
 
     <header class="profile-header">
-        <div class="cover-photo"><img src="eye.jpg" class="cover-photo" atl="the eye"></div>
+        <div class="cover-photo"></div>
         <div class="profile-container">
             <div class="profile-avatar-wrapper">
-                <img src="pro.jpg" alt="OG Topman" class="profile-avatar">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=topman" alt="OG Topman" class="profile-avatar">
             </div>
             <div class="profile-info py-4">
                 <h1 class="text-2xl font-bold tracking-tight">OG Topman</h1>
@@ -268,10 +268,6 @@
 
 
     <script>
-        const POSTS_URL = 'https://raw.githubusercontent.com/full-submit/full-submit.github.io/main/posts.json';
-        //const PAGES_URL = 'https://raw.githubusercontent.com/full-submit/full-submit.github.io/main/pages.json';
-//
-    
         // --- HARD-CODED PAGE DATA ---
         const pagesCache = {
             "about": {
@@ -288,15 +284,20 @@
             }
         };
 
+
         // --- EXTERNAL POSTS CONFIGURATION ---
-    
+        const POSTS_URL = 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/posts.json';
+
+
         let postsCache = [];
         let currentView = 'feed';
+
 
         function toggleMenu() {
             document.getElementById('sideMenu').classList.toggle('open');
             document.getElementById('overlay').classList.toggle('show');
         }
+
 
         async function initData() {
             try {
@@ -310,6 +311,7 @@
             renderView();
         }
 
+
         function navigateTo(view) {
             currentView = view;
             if (document.getElementById('sideMenu').classList.contains('open')) toggleMenu();
@@ -317,10 +319,12 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+
         function renderView() {
             const container = document.getElementById('feed-container');
             const searchSection = document.getElementById('searchSection');
             const backContainer = document.getElementById('backContainer');
+
 
             if (currentView === 'feed') {
                 searchSection.classList.remove('hidden');
@@ -332,6 +336,7 @@
                 renderPage(currentView);
             }
         }
+
 
         function renderPosts(posts) {
             const container = document.getElementById('feed-container');
@@ -348,14 +353,17 @@
             `).join('');
         }
 
+
         function renderPage(pageKey) {
             const container = document.getElementById('feed-container');
             const data = pagesCache[pageKey];
+
 
             if (!data) {
                 container.innerHTML = `<div class="paper-card text-center text-xs text-gray-400">Content for "${pageKey}" not found.</div>`;
                 return;
             }
+
 
             container.innerHTML = `
                 <article class="paper-card">
@@ -368,6 +376,7 @@
             `;
         }
 
+
         document.getElementById('searchBox').addEventListener('input', (e) => {
             if (currentView !== 'feed') return;
             const term = e.target.value.toLowerCase();
@@ -378,8 +387,382 @@
             renderPosts(filtered);
         });
 
+
+        window.onload = initData;
+    </script>
+</body>
+</html>           font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* --- Side Menu (Drawer) --- */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background: #fff;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .side-menu.open { right: 0; }
+
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+
+        .menu-overlay.show { opacity: 1; visibility: visible; }
+
+
+        .menu-close-btn {
+            align-self: flex-end;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            margin-bottom: 2rem;
+        }
+
+
+        .side-nav-link {
+            font-family: sans-serif;
+            font-size: 1rem;
+            margin-bottom: 1.25rem;
+            color: #333;
+            text-decoration: none;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+
+        .side-nav-link:hover { color: #888; }
+
+
+        .ig-icon { width: 20px; height: 20px; margin-right: 12px; }
+
+
+        .donate-btn-side {
+            background: #333;
+            color: white !important;
+            padding: 12px;
+            text-align: center;
+            border-radius: 4px;
+            margin-top: auto;
+            font-family: sans-serif;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+
+        /* --- Header & Layout --- */
+        .profile-header { background: #ffffff; border-bottom: 1px solid #ddd; }
+        .cover-photo { height: 120px; background: linear-gradient(135deg, #d1d1d1 0%, #e8e8e8 100%); }
+        
+        .profile-container {
+            max-width: 42rem;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+
+        .profile-avatar-wrapper { margin-top: -45px; z-index: 10; }
+        .profile-avatar {
+            width: 90px; height: 90px; border-radius: 20%;
+            border: 4px solid white; background: #ccc;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+
+        /* --- Search Bar & Labels --- */
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #ccc;
+            margin-bottom: 3rem;
+        }
+
+
+        .search-bar {
+            background: transparent; border: none; font-family: sans-serif;
+            padding: 12px 0; text-align: left; flex-grow: 1;
+        }
+
+
+        .search-bar::placeholder { text-align: center; color: #aaa; font-style: italic; }
+        .search-bar:focus { outline: none; }
+
+
+        .enter-icon { width: 20px; height: 20px; fill: #999; margin-left: 10px; }
+
+
+        .section-label {
+            font-family: sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-size: 0.85rem;
+            color: #333;
+            margin-bottom: 1rem;
+            display: block;
+            text-align: center;
+        }
+
+
+        /* --- Cards --- */
+        .paper-card {
+            background: #fff; border-radius: 4px; padding: 2.5rem;
+            margin-bottom: 2rem; box-shadow: 0 0 25px rgba(0, 0, 0, 0.08); 
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            font-family: sans-serif;
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+        }
+
+
+        .back-link:hover { color: #333; }
+
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+
+    <!-- Menu Toggle Icon -->
+    <div class="fixed top-6 right-6 z-[60] cursor-pointer bg-white/80 p-2 rounded-full shadow-sm" onclick="toggleMenu()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </div>
+
+
+    <!-- Side Menu -->
+    <div class="menu-overlay" id="overlay" onclick="toggleMenu()"></div>
+    <div class="side-menu" id="sideMenu">
+        <div class="menu-close-btn" onclick="toggleMenu()">&times;</div>
+        
+        <div class="side-nav-link" onclick="navigateTo('about')">About Me</div>
+        <div class="side-nav-link" onclick="navigateTo('goals')">My Project Goals</div>
+        <div class="side-nav-link" onclick="navigateTo('destination')">Destination</div>
+        
+        <div class="border-t border-gray-100 my-4"></div>
+
+
+        <a href="https://www.instagram.com/alexandro_balandino?igsh=MXBmcTlvYTFpbnY4bg==" target="_blank" class="side-nav-link">
+            <svg class="ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            <span class="font-sans font-medium">OG Topman</span>
+        </a>
+
+
+        <a href="#" class="donate-btn-side">Donate Support</a>
+    </div>
+
+
+    <header class="profile-header">
+        <div class="cover-photo"></div>
+        <div class="profile-container">
+            <div class="profile-avatar-wrapper">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=topman" alt="OG Topman" class="profile-avatar">
+            </div>
+            <div class="profile-info py-4">
+                <h1 class="text-2xl font-bold tracking-tight">OG Topman</h1>
+                <p class="text-gray-500 italic mt-1 font-sans text-sm leading-relaxed max-w-sm">
+                    Culture OG member head Grandmaster teachin' way of existence that proves you can become more then that
+                </p>
+            </div>
+        </div>
+    </header>
+
+
+    <main class="max-w-2xl mx-auto px-4 mt-10">
+        <!-- Search Section -->
+        <div id="searchSection" class="mb-8">
+            <span id="feedLabel" class="section-label">Feed</span>
+            <div class="search-wrapper">
+                <input type="text" id="searchBox" placeholder="Search for posts" class="search-bar w-full outline-none">
+                <svg class="enter-icon" viewBox="0 0 24 24"><path d="M19 7v4H5.83l3.58-3.59L8 6l-6 6 6 6 1.41-1.41L5.83 13H21V7h-2z"/></svg>
+            </div>
+        </div>
+
+
+        <!-- Back Button (Shown on sub-pages) -->
+        <div id="backContainer" class="hidden">
+            <div class="back-link" onclick="navigateTo('feed')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Back to Feed
+            </div>
+        </div>
+
+
+        <div id="feed-container">
+            <!-- Dynamic Content -->
+        </div>
+    </main>
+
+
+    <footer class="py-12 text-center text-gray-400 text-xs font-sans">
+        &copy; OG Topman • Culture OG Grandmaster
+    </footer>
+
+
+    <script>
+        // --- HARD-CODED PAGE DATA ---
+        const pagesCache = {
+            "about": {
+                "title": "About Me",
+                "content": "Culture OG member head Grandmaster. I am dedicated to teaching the way of existence that proves you can become more than just your circumstances. My journey is about building a legacy through wisdom and culture."
+            },
+            "goals": {
+                "title": "My Project Goals",
+                "content": "1. Empower the community through cultural education.<br>2. Build a digital archive of OG wisdom.<br>3. Establish a platform for upcoming Grandmasters.<br>4. Prove that growth is a choice made every single day."
+            },
+            "destination": {
+                "title": "Destination",
+                "content": "The destination isn't a place, it's a state of being. We are heading toward a future where the culture is respected, preserved, and evolved by those who live it truthfully."
+            }
+        };
+
+
+        // --- EXTERNAL POSTS CONFIGURATION ---
+        const POSTS_URL = 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/posts.json';
+
+
+        let postsCache = [];
+        let currentView = 'feed';
+
+
+        function toggleMenu() {
+            document.getElementById('sideMenu').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('show');
+        }
+
+
+        async function initData() {
+            try {
+                const response = await fetch(POSTS_URL);
+                if (response.ok) {
+                    postsCache = await response.json();
+                }
+            } catch (error) {
+                console.error('Feed fetch failed, using empty list.');
+            }
+            renderView();
+        }
+
+
+        function navigateTo(view) {
+            currentView = view;
+            if (document.getElementById('sideMenu').classList.contains('open')) toggleMenu();
+            renderView();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+
+        function renderView() {
+            const container = document.getElementById('feed-container');
+            const searchSection = document.getElementById('searchSection');
+            const backContainer = document.getElementById('backContainer');
+
+
+            if (currentView === 'feed') {
+                searchSection.classList.remove('hidden');
+                backContainer.classList.add('hidden');
+                renderPosts(postsCache);
+            } else {
+                searchSection.classList.add('hidden');
+                backContainer.classList.remove('hidden');
+                renderPage(currentView);
+            }
+        }
+
+
+        function renderPosts(posts) {
+            const container = document.getElementById('feed-container');
+            if (posts.length === 0) {
+                container.innerHTML = `<div class="paper-card text-center text-xs text-gray-400 italic">No posts found in the archives. Configure POSTS_URL to load your feed.</div>`;
+                return;
+            }
+            container.innerHTML = posts.map(post => `
+                <article class="paper-card">
+                    <h2 class="text-xl font-bold mb-4">${post.title}</h2>
+                    <div class="w-8 h-1 bg-gray-200 mb-6"></div>
+                    <div class="post-content text-gray-700">${post.content}</div>
+                </article>
+            `).join('');
+        }
+
+
+        function renderPage(pageKey) {
+            const container = document.getElementById('feed-container');
+            const data = pagesCache[pageKey];
+
+
+            if (!data) {
+                container.innerHTML = `<div class="paper-card text-center text-xs text-gray-400">Content for "${pageKey}" not found.</div>`;
+                return;
+            }
+
+
+            container.innerHTML = `
+                <article class="paper-card">
+                    <h2 class="text-xl font-bold mb-4">${data.title}</h2>
+                    <div class="w-12 h-1 bg-gray-950 mb-6"></div>
+                    <div class="post-content text-gray-800 leading-relaxed">
+                        ${data.content}
+                    </div>
+                </article>
+            `;
+        }
+
+
+        document.getElementById('searchBox').addEventListener('input', (e) => {
+            if (currentView !== 'feed') return;
+            const term = e.target.value.toLowerCase();
+            const filtered = postsCache.filter(p => 
+                p.title.toLowerCase().includes(term) || 
+                p.content.toLowerCase().includes(term)
+            );
+            renderPosts(filtered);
+        });
+
+
         window.onload = initData;
     </script>
 </body>
 </html>
-
