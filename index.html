@@ -104,7 +104,7 @@
 
         /* --- Header & Layout --- */
         .profile-header { background: #ffffff; border-bottom: 1px solid #ddd; }
-        .cover-photo { height: 120px; background: linear-gradient(135deg, #d1d1d1 0%, #e8e8e8 100%); }
+        .cover-photo { height: 120px; widt:100%; background: linear-gradient(135deg, #d1d1d1 0%, #e8e8e8 100%); }
         
         .profile-container {
             max-width: 42rem;
@@ -118,7 +118,7 @@
 
         .profile-avatar-wrapper { margin-top: -45px; z-index: 10; }
         .profile-avatar {
-            width: 90px; height: 90px; border-radius: 20%;
+            width: 73px; height: 90px; border-radius: 20%;
             border: 4px solid white; background: #ccc;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
@@ -221,10 +221,10 @@
 
 
     <header class="profile-header">
-        <div class="cover-photo"></div>
+        <div class="cover-photo"><img src="eye.jpg"</div>
         <div class="profile-container">
             <div class="profile-avatar-wrapper">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=topman" alt="OG Topman" class="profile-avatar">
+                <img src="pro.jpg" alt="OG Topman" class="profile-avatar">
             </div>
             <div class="profile-info py-4">
                 <h1 class="text-2xl font-bold tracking-tight">OG Topman</h1>
@@ -286,7 +286,7 @@
 
 
         // --- EXTERNAL POSTS CONFIGURATION ---
-        const POSTS_URL = 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/posts.json';
+        const POSTS_URL = 'https://raw.githubusercontent.com/full-submit/full-submit.github.io/main/posts.json';
 
 
         let postsCache = [];
