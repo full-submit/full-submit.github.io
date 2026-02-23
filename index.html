@@ -104,7 +104,7 @@
 
         /* --- Header & Layout --- */
         .profile-header { background: #ffffff; border-bottom: 1px solid #ddd; }
-        .cover-photo { height: 120px; width:100%; background: linear-gradient(135deg, #d1d1d1 0%, #e8e8e8 100%); }
+        .cover-photo { height: 160px; width:100%; background: linear-gradient(135deg, #d1d1d1 0%, #e8e8e8 100%); }
         
         .profile-container {
             max-width: 38rem;
@@ -269,36 +269,46 @@
 
     <script>
         const POSTS_URL = 'https://raw.githubusercontent.com/full-submit/full-submit.github.io/main/posts.json';
-        const PAGES_URL = 'https://raw.githubusercontent.com/full-submit/full-submit.github.io/main/pages.json';
+        //const PAGES_URL = 'https://raw.githubusercontent.com/full-submit/full-submit.github.io/main/pages.json';
 //
-        let postsCache = [];
-        let pagesCache = {};
-        let currentView = 'feed';
+    
+        // --- HARD-CODED PAGE DATA ---
+        const pagesCache = {
+            "about": {
+                "title": "About Me",
+                "content": "Culture OG member head Grandmaster. I am dedicated to teaching the way of existence that proves you can become more than just your circumstances. My journey is about building a legacy through wisdom and culture."
+            },
+            "goals": {
+                "title": "My Project Goals",
+                "content": "1. Empower the community through cultural education.<br>2. Build a digital archive of OG wisdom.<br>3. Establish a platform for upcoming Grandmasters.<br>4. Prove that growth is a choice made every single day."
+            },
+            "destination": {
+                "title": "Destination",
+                "content": "The destination isn't a place, it's a state of being. We are heading toward a future where the culture is respected, preserved, and evolved by those who live it truthfully."
+            }
+        };
 
+        // --- EXTERNAL POSTS CONFIGURATION ---
+    
+        let postsCache = [];
+        let currentView = 'feed';
 
         function toggleMenu() {
             document.getElementById('sideMenu').classList.toggle('open');
             document.getElementById('overlay').classList.toggle('show');
         }
 
-
         async function initData() {
             try {
-                const [postsRes, pagesRes] = await Promise.all([
-                    fetch(POSTS_URL).catch(() => null),
-                    fetch(PAGES_URL).catch(() => null)
-                ]);
-
-
-                if (postsRes && postsRes.ok) postsCache = await postsRes.json();
-                if (pagesRes && pagesRes.ok) pagesCache = await pagesRes.json();
-                
-                renderView();
+                const response = await fetch(POSTS_URL);
+                if (response.ok) {
+                    postsCache = await response.json();
+                }
             } catch (error) {
-                renderView();
+                console.error('Feed fetch failed, using empty list.');
             }
+            renderView();
         }
-
 
         function navigateTo(view) {
             currentView = view;
@@ -307,12 +317,10 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-
         function renderView() {
             const container = document.getElementById('feed-container');
             const searchSection = document.getElementById('searchSection');
             const backContainer = document.getElementById('backContainer');
-
 
             if (currentView === 'feed') {
                 searchSection.classList.remove('hidden');
@@ -325,11 +333,10 @@
             }
         }
 
-
         function renderPosts(posts) {
             const container = document.getElementById('feed-container');
             if (posts.length === 0) {
-                container.innerHTML = `<div class="paper-card text-center text-xs text-gray-400">Archive empty. Update JSON URLs.</div>`;
+                container.innerHTML = `<div class="paper-card text-center text-xs text-gray-400 italic">No posts found in the archives. Configure POSTS_URL to load your feed.</div>`;
                 return;
             }
             container.innerHTML = posts.map(post => `
@@ -341,17 +348,14 @@
             `).join('');
         }
 
-
         function renderPage(pageKey) {
             const container = document.getElementById('feed-container');
             const data = pagesCache[pageKey];
-
 
             if (!data) {
                 container.innerHTML = `<div class="paper-card text-center text-xs text-gray-400">Content for "${pageKey}" not found.</div>`;
                 return;
             }
-
 
             container.innerHTML = `
                 <article class="paper-card">
@@ -364,16 +368,18 @@
             `;
         }
 
-
         document.getElementById('searchBox').addEventListener('input', (e) => {
             if (currentView !== 'feed') return;
             const term = e.target.value.toLowerCase();
-            const filtered = postsCache.filter(p => p.title.toLowerCase().includes(term) || p.content.toLowerCase().includes(term));
+            const filtered = postsCache.filter(p => 
+                p.title.toLowerCase().includes(term) || 
+                p.content.toLowerCase().includes(term)
+            );
             renderPosts(filtered);
         });
-
 
         window.onload = initData;
     </script>
 </body>
 </html>
+
